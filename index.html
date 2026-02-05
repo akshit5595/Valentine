@@ -20,16 +20,10 @@
       to { opacity: 1; transform: scale(1); }
     }
 
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
     body {
       margin: 0;
-      height: 100vh;
-      overflow: hidden;
+      min-height: 100vh;
+      overflow-x: hidden;
       font-family: "Poppins", "Comic Sans MS", sans-serif;
       background: linear-gradient(
         135deg,
@@ -41,6 +35,16 @@
       );
       background-size: 400% 400%;
       animation: gradient 10s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .center {
+      min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -53,14 +57,12 @@
       text-align: center;
       box-shadow: 0 30px 70px rgba(255,0,90,0.45);
       max-width: 420px;
-      z-index: 10;
       animation: pulse 2.5s infinite;
     }
 
     h1 {
       color: #ff2f92;
       font-size: 38px;
-      margin-bottom: 10px;
     }
 
     p {
@@ -89,7 +91,6 @@
       color: white;
       left: 50%;
       transform: translateX(-50%);
-      box-shadow: 0 12px 25px rgba(255,77,109,0.6);
     }
 
     #no {
@@ -99,11 +100,19 @@
     }
 
     .heart {
-      position: absolute;
+      position: fixed;
       bottom: -20px;
       font-size: 26px;
       animation: float linear infinite;
       pointer-events: none;
+      z-index: 0;
+    }
+
+    #reveal {
+      display: none;
+      padding: 40px 20px;
+      text-align: center;
+      color: white;
     }
 
     .photo {
@@ -120,24 +129,39 @@
 
 <body>
 
-  <div class="card">
-    <h1>Shefu 💕</h1>
+  <!-- Valentine Card -->
+  <div class="center" id="cardScreen">
+    <div class="card">
+      <h1>Shefu 💕</h1>
+      <p>
+        Of all the people,<br>
+        in all the places,<br>
+        my favorite place<br>
+        is right next to you 💖
+      </p>
+      <p><strong>Will you be my Valentine?</strong></p>
 
-    <p>
-      Of all the people,<br>
-      in all the places,<br>
-      my favorite place<br>
-      is right next to you 💖
-    </p>
-
-    <p><strong>Will you be my Valentine?</strong></p>
-
-    <div class="buttons">
-      <button id="yes">YES 💘</button>
-      <button id="no">No 🙈</button>
+      <div class="buttons">
+        <button id="yes">YES 💘</button>
+        <button id="no">No 🙈</button>
+      </div>
     </div>
   </div>
 
+  <!-- Reveal Screen -->
+  <div id="reveal">
+    <h1 style="font-size:48px;">SHEFU SAID YES 💖</h1>
+    <p style="font-size:22px;">
+      With or without you…<br>
+      I’d still choose you every time 🥰
+    </p>
+
+    <img src="photos/photo1.jpg" class="photo">
+    <img src="photos/photo2.jpg" class="photo">
+    <img src="photos/photo3.jpg" class="photo">
+  </div>
+
+  <!-- YouTube Player -->
   <div id="player"></div>
   <script src="https://www.youtube.com/iframe_api"></script>
 
@@ -155,39 +179,20 @@
 
     const noBtn = document.getElementById("no");
     const yesBtn = document.getElementById("yes");
+    const cardScreen = document.getElementById("cardScreen");
+    const reveal = document.getElementById("reveal");
 
     noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * 320 - 160;
-      const y = Math.random() * 160 - 80;
+      const x = Math.random() * 300 - 150;
+      const y = Math.random() * 150 - 75;
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
     });
 
     yesBtn.addEventListener("click", () => {
       if (player) player.playVideo();
 
-      document.body.innerHTML = `
-        <div style="
-          min-height:100vh;
-          padding:40px 20px;
-          display:flex;
-          flex-direction:column;
-          align-items:center;
-          text-align:center;
-          color:white;
-          background:linear-gradient(135deg,#ff4d6d,#ffb3c6,#ff85a1);
-          font-family:Poppins, sans-serif;
-        ">
-          <h1 style="font-size:46px;">SHEFU SAID YES 💖</h1>
-          <p style="font-size:22px; max-width:520px;">
-            With or without you…<br>
-            I’d still choose you every time 🥰
-          </p>
-
-          <img src="photos/photo1.jpg" class="photo">
-          <img src="photos/photo2.jpg" class="photo">
-          <img src="photos/photo3.jpg" class="photo">
-        </div>
-      `;
+      cardScreen.style.display = "none";
+      reveal.style.display = "block";
     });
 
     const hearts = ["💖","💗","💕","💘","💝","💞"];
@@ -199,8 +204,9 @@
       heart.style.animationDuration = Math.random() * 3 + 4 + "s";
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 7000);
-    }, 260);
+    }, 250);
   </script>
 
 </body>
 </html>
+
