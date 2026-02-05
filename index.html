@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Shefu 💖 Be My Valentine</title>
+
+  <style>
+    @keyframes float {
+      0% { transform: translateY(0); opacity: 0.9; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); }
+      50% { transform: scale(1.07); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: "Poppins", "Comic Sans MS", sans-serif;
+      background: linear-gradient(
+        135deg,
+        #ffb3c6,
+        #ff8fab,
+        #ffc2d1,
+        #ff4d6d,
+        #ff85a1
+      );
+      background-size: 400% 400%;
+      animation: gradient 10s ease infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.96);
+      padding: 50px 45px;
+      border-radius: 35px;
+      text-align: center;
+      box-shadow: 0 30px 70px rgba(255,0,90,0.45);
+      max-width: 420px;
+      z-index: 10;
+      animation: pulse 2.5s infinite;
+    }
+
+    h1 {
+      color: #ff2f92;
+      font-size: 38px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      font-size: 20px;
+      color: #444;
+    }
+
+    .buttons {
+      margin-top: 35px;
+      position: relative;
+      height: 80px;
+    }
+
+    button {
+      font-size: 22px;
+      padding: 16px 34px;
+      border-radius: 45px;
+      border: none;
+      cursor: pointer;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    #yes {
+      background: linear-gradient(135deg,#ff4d6d,#ff85a1);
+      color: white;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 12px 25px rgba(255,77,109,0.6);
+    }
+
+    #no {
+      background: #ffe0ec;
+      color: #ff2f92;
+      right: 0;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -20px;
+      font-size: 26px;
+      animation: float linear infinite;
+      pointer-events: none;
+    }
+
+    .photo {
+      width: 260px;
+      border-radius: 25px;
+      margin: 20px 0;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    #player { display: none; }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h1>Shefu 💕</h1>
+
+    <p>
+      Of all the people,<br>
+      in all the places,<br>
+      my favorite place<br>
+      is right next to you 💖
+    </p>
+
+    <p><strong>Will you be my Valentine?</strong></p>
+
+    <div class="buttons">
+      <button id="yes">YES 💘</button>
+      <button id="no">No 🙈</button>
+    </div>
+  </div>
+
+  <div id="player"></div>
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+  <script>
+    let player;
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player('player', {
+        height: '0',
+        width: '0',
+        videoId: 'ujNeHIo7oTE',
+        playerVars: { autoplay: 0, controls: 0 }
+      });
+    }
+
+    const noBtn = document.getElementById("no");
+    const yesBtn = document.getElementById("yes");
+
+    noBtn.addEventListener("mouseover", () => {
+      const x = Math.random() * 320 - 160;
+      const y = Math.random() * 160 - 80;
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+
+    yesBtn.addEventListener("click", () => {
+      if (player) player.playVideo();
+
+      document.body.innerHTML = `
+        <div style="
+          min-height:100vh;
+          padding:40px 20px;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          text-align:center;
+          color:white;
+          background:linear-gradient(135deg,#ff4d6d,#ffb3c6,#ff85a1);
+          font-family:Poppins, sans-serif;
+        ">
+          <h1 style="font-size:46px;">SHEFU SAID YES 💖</h1>
+          <p style="font-size:22px; max-width:520px;">
+            With or without you…<br>
+            I’d still choose you every time 🥰
+          </p>
+
+          <img src="photos/photo1.jpg" class="photo">
+          <img src="photos/photo2.jpg" class="photo">
+          <img src="photos/photo3.jpg" class="photo">
+        </div>
+      `;
+    });
+
+    const hearts = ["💖","💗","💕","💘","💝","💞"];
+    setInterval(() => {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = hearts[Math.floor(Math.random() * hearts.length)];
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = Math.random() * 3 + 4 + "s";
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 7000);
+    }, 260);
+  </script>
+
+</body>
+</html>
