@@ -20,6 +20,12 @@
       to { opacity: 1; transform: scale(1); }
     }
 
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
@@ -37,12 +43,6 @@
       animation: gradient 10s ease infinite;
     }
 
-    @keyframes gradient {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
     .center {
       min-height: 100vh;
       display: flex;
@@ -58,6 +58,8 @@
       box-shadow: 0 30px 70px rgba(255,0,90,0.45);
       max-width: 420px;
       animation: pulse 2.5s infinite;
+      z-index: 10;
+      position: relative;
     }
 
     h1 {
@@ -118,8 +120,14 @@
     .photo {
       width: 260px;
       border-radius: 25px;
-      margin: 20px 0;
+      margin: 18px 0;
       box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      animation: fadeIn 1.5s ease forwards;
+    }
+
+    .gif {
+      width: 180px;
+      margin: 15px 0;
       animation: fadeIn 1.5s ease forwards;
     }
 
@@ -132,13 +140,15 @@
   <!-- Valentine Card -->
   <div class="center" id="cardScreen">
     <div class="card">
-      <h1>Shefu 💕</h1>
+      <h1>Shefu 🧸💕</h1>
+
       <p>
         Of all the people,<br>
         in all the places,<br>
         my favorite place<br>
         is right next to you 💖
       </p>
+
       <p><strong>Will you be my Valentine?</strong></p>
 
       <div class="buttons">
@@ -151,11 +161,38 @@
   <!-- Reveal Screen -->
   <div id="reveal">
     <h1 style="font-size:48px;">SHEFU SAID YES 💖</h1>
+
+    <img
+      src="https://media.giphy.com/media/MDJ9IbxxvDUQM/giphy.gif"
+      class="gif"
+      alt="Teddy bears kissing"
+    >
+
     <p style="font-size:22px;">
       With or without you…<br>
       I’d still choose you every time 🥰
     </p>
 
+    <button id="playMusic" style="
+      margin: 20px 0;
+      font-size: 20px;
+      padding: 14px 30px;
+      border-radius: 40px;
+      border: none;
+      background: linear-gradient(135deg,#ff4d6d,#ff85a1);
+      color: white;
+      box-shadow: 0 10px 20px rgba(255,77,109,0.5);
+    ">
+      Play our song 🎵
+    </button>
+
+    <img
+      src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif"
+      class="gif"
+      alt="Cute bear hug"
+    >
+
+    <!-- Your photos -->
     <img src="photos/photo1.jpg" class="photo">
     <img src="photos/photo2.jpg" class="photo">
     <img src="photos/photo3.jpg" class="photo">
@@ -177,24 +214,47 @@
       });
     }
 
-    const noBtn = document.getElementById("no");
-    const yesBtn = document.getElementById("yes");
     const cardScreen = document.getElementById("cardScreen");
     const reveal = document.getElementById("reveal");
+    const yesBtn = document.getElementById("yes");
+    const noBtn = document.getElementById("no");
+    const playBtn = document.getElementById("playMusic");
 
+    // Messages for NO button
+    const messages = [
+      "Wait 😳",
+      "Shefu pls 🥺",
+      "But I adore you 💕",
+      "This feels wrong 😏",
+      "Okay but I still love you 💖"
+    ];
+    let count = 0;
+
+    // NO button dodging + message
     noBtn.addEventListener("mouseover", () => {
-      const x = Math.random() * 300 - 150;
-      const y = Math.random() * 150 - 75;
+      // Move randomly
+      const x = Math.random() * 250 - 125; // horizontal
+      const y = Math.random() * 100 - 50;  // vertical
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
+
+      // Change message
+      noBtn.innerText = messages[count % messages.length];
+      count++;
     });
 
+    // YES click
     yesBtn.addEventListener("click", () => {
-      if (player) player.playVideo();
-
       cardScreen.style.display = "none";
       reveal.style.display = "block";
     });
 
+    // Play music
+    playBtn.addEventListener("click", () => {
+      if (player) player.playVideo();
+      playBtn.style.display = "none";
+    });
+
+    // Floating hearts
     const hearts = ["💖","💗","💕","💘","💝","💞"];
     setInterval(() => {
       const heart = document.createElement("div");
@@ -204,9 +264,10 @@
       heart.style.animationDuration = Math.random() * 3 + 4 + "s";
       document.body.appendChild(heart);
       setTimeout(() => heart.remove(), 7000);
-    }, 250);
+    }, 240);
   </script>
 
 </body>
 </html>
+
 
